@@ -1,30 +1,21 @@
 /**
  * TestimonialSlider Component
  * 
- * Swiper.js-powered testimonial carousel with:
- * - Graceful fallback if Swiper fails to load
- * - Glassmorphism overlay on hover/tap
- * - PDF lazy loading with inline modal or new tab fallback
- * - Focus trap in modal with ESC to close
- * - Autoplay (6s) with pause on hover/focus, resume after 12s
- * - Analytics tracking via window.testimonialPdfOpened
+ * Testimonial carousel with:
+ * - Left/right navigation buttons
+ * - Hover overlay showing only "Read PDF" button
+ * - PDF opens in new external tab
+ * - Realistic hover animations
  * - Full accessibility support
  */
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide, SwiperClass } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, Keyboard, A11y } from 'swiper/modules';
-import { FileText, BookOpen, X, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import { FileText, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { testimonialData, trackPdfOpen, type Testimonial } from '@/data/aboutData';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
 // Import Swiper styles
@@ -34,37 +25,28 @@ import 'swiper/css/pagination';
 
 interface TestimonialCardProps {
   testimonial: Testimonial;
-  onOpenPdf: (testimonial: Testimonial) => void;
-  onReadExcerpt: (testimonial: Testimonial) => void;
 }
 
 /**
  * Individual Testimonial Card with hover overlay
  */
-const TestimonialCard: React.FC<TestimonialCardProps> = ({
-  testimonial,
-  onOpenPdf,
-  onReadExcerpt,
-}) => {
+const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const showOverlay = isHovered || isFocused;
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const handleOpenPdf = useCallback(() => {
-    onOpenPdf(testimonial);
-  }, [testimonial, onOpenPdf]);
-
-  const handleReadExcerpt = useCallback(() => {
-    onReadExcerpt(testimonial);
-  }, [testimonial, onReadExcerpt]);
+    // Track analytics
+    trackPdfOpen(testimonial.id, testimonial.name);
+    // Open in new external tab
+    window.open(testimonial.pdfUrl, '_blank', 'noopener,noreferrer');
+  }, [testimonial]);
 
   return (
     <div
-      className="relative aspect-[3/4] rounded-xl overflow-hidden group cursor-pointer"
+      ref={cardRef}
+      className="relative aspect-[3/4] rounded-2xl overflow-hidden group cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
     >
       {/* Cover Image */}
       <img
@@ -72,168 +54,115 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         alt={`${testimonial.name}, ${testimonial.title} at ${testimonial.company}`}
         loading="lazy"
         className={cn(
-          "w-full h-full object-cover transition-transform duration-700",
-          showOverlay && "scale-105"
+          "w-full h-full object-cover transition-all duration-700 ease-out",
+          isHovered && "scale-110 brightness-75"
         )}
       />
 
-      {/* Base Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+      {/* Gradient Overlay - Always visible */}
+      <div 
+        className={cn(
+          "absolute inset-0 transition-all duration-500",
+          isHovered 
+            ? "bg-gradient-to-t from-background via-background/70 to-background/30"
+            : "bg-gradient-to-t from-background/90 via-background/30 to-transparent"
+        )}
+      />
 
-      {/* Base Info (always visible) */}
-      <div className="absolute bottom-0 left-0 right-0 p-6">
-        <p className="text-lg font-semibold text-foreground">{testimonial.name}</p>
-        <p className="text-sm text-muted-foreground">{testimonial.title}</p>
-        <p className="text-sm text-accent">{testimonial.company}</p>
+      {/* Base Info - Always visible at bottom */}
+      <div 
+        className={cn(
+          "absolute bottom-0 left-0 right-0 p-6 transition-all duration-500",
+          isHovered && "translate-y-[-20px]"
+        )}
+      >
+        <p className="text-xl font-display font-semibold text-foreground">
+          {testimonial.name}
+        </p>
+        <p className="text-sm text-muted-foreground mt-1">{testimonial.title}</p>
+        <p className="text-sm font-medium text-accent">{testimonial.company}</p>
       </div>
 
-      {/* Glassmorphism Hover Overlay */}
+      {/* Hover Overlay - Read PDF Button */}
       <div
         className={cn(
           "absolute inset-0 flex flex-col items-center justify-center p-6",
-          "glass-card rounded-none border-0",
-          "transition-all duration-500",
-          showOverlay ? "opacity-100" : "opacity-0 pointer-events-none"
+          "transition-all duration-500 ease-out",
+          isHovered ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
-        aria-hidden={!showOverlay}
+        aria-hidden={!isHovered}
       >
-        {/* Quote Icon */}
-        <div className="text-6xl text-accent/30 mb-4">"</div>
+        {/* Decorative Quote */}
+        <div 
+          className={cn(
+            "text-8xl text-accent/20 font-serif transition-all duration-700",
+            isHovered ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          )}
+        >
+          "
+        </div>
 
-        {/* Short Excerpt */}
-        <p className="text-center text-foreground mb-6 line-clamp-3">
+        {/* Short Preview */}
+        <p 
+          className={cn(
+            "text-center text-foreground/90 text-sm leading-relaxed mb-8 max-w-[200px]",
+            "transition-all duration-500 delay-100",
+            isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+          )}
+        >
           {testimonial.excerpt}
         </p>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 w-full">
-          <Button
-            variant="default"
-            className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90 focus-ring"
-            onClick={handleOpenPdf}
-            aria-label={`Open PDF — Letter from ${testimonial.company} — ${testimonial.name}`}
-          >
-            <FileText className="w-4 h-4 mr-2" />
-            Open PDF
-          </Button>
-          <Button
-            variant="outline"
-            className="flex-1 focus-ring"
-            onClick={handleReadExcerpt}
-            aria-label={`Read excerpt from ${testimonial.name}`}
-          >
-            <BookOpen className="w-4 h-4 mr-2" />
-            Read excerpt
-          </Button>
-        </div>
+        {/* Read PDF Button */}
+        <Button
+          variant="default"
+          size="lg"
+          onClick={handleOpenPdf}
+          className={cn(
+            "bg-accent text-accent-foreground hover:bg-accent/90",
+            "shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40",
+            "transition-all duration-500 delay-150",
+            "hover:scale-105 active:scale-95",
+            isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+          )}
+          aria-label={`Read PDF letter from ${testimonial.name} at ${testimonial.company}`}
+        >
+          <FileText className="w-5 h-5 mr-2" />
+          Read PDF
+          <ExternalLink className="w-4 h-4 ml-2 opacity-60" />
+        </Button>
       </div>
+
+      {/* Focus indicator for accessibility */}
+      <button
+        className="absolute inset-0 w-full h-full opacity-0 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-2xl"
+        onClick={handleOpenPdf}
+        onFocus={() => setIsHovered(true)}
+        onBlur={() => setIsHovered(false)}
+        aria-label={`View testimonial from ${testimonial.name}`}
+      />
     </div>
   );
 };
 
 /**
- * Fallback Component if Swiper fails
+ * Fallback Grid if Swiper fails
  */
-const FallbackSlider: React.FC<{
-  onOpenPdf: (testimonial: Testimonial) => void;
-  onReadExcerpt: (testimonial: Testimonial) => void;
-}> = ({ onOpenPdf, onReadExcerpt }) => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {testimonialData.map((testimonial) => (
-        <TestimonialCard
-          key={testimonial.id}
-          testimonial={testimonial}
-          onOpenPdf={onOpenPdf}
-          onReadExcerpt={onReadExcerpt}
-        />
-      ))}
-    </div>
-  );
-};
+const FallbackGrid: React.FC = () => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    {testimonialData.map((testimonial) => (
+      <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+    ))}
+  </div>
+);
 
 /**
  * Main TestimonialSlider Component
  */
 export const TestimonialSlider: React.FC = () => {
-  const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
-  const [modalType, setModalType] = useState<'pdf' | 'excerpt' | null>(null);
   const [swiperFailed, setSwiperFailed] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const swiperRef = useRef<SwiperClass | null>(null);
-  const inactivityRef = useRef<NodeJS.Timeout | null>(null);
   const reducedMotion = useReducedMotion();
-
-  // Handle PDF open
-  const handleOpenPdf = useCallback((testimonial: Testimonial) => {
-    // Track analytics
-    trackPdfOpen(testimonial.id, testimonial.name);
-
-    // Check if inline PDF viewing is supported
-    const canViewInline = window.navigator.mimeTypes?.['application/pdf']?.enabledPlugin;
-
-    if (canViewInline || true) { // Force modal for demo
-      setSelectedTestimonial(testimonial);
-      setModalType('pdf');
-    } else {
-      // Fallback: open in new tab
-      window.open(testimonial.pdfUrl, '_blank', 'noopener,noreferrer');
-    }
-  }, []);
-
-  // Handle excerpt read
-  const handleReadExcerpt = useCallback((testimonial: Testimonial) => {
-    setSelectedTestimonial(testimonial);
-    setModalType('excerpt');
-  }, []);
-
-  // Close modal
-  const closeModal = useCallback(() => {
-    setSelectedTestimonial(null);
-    setModalType(null);
-  }, []);
-
-  // Pause autoplay on interaction
-  const handleInteraction = useCallback(() => {
-    if (swiperRef.current?.autoplay?.running) {
-      swiperRef.current.autoplay.stop();
-      setIsPaused(true);
-
-      // Clear existing timeout
-      if (inactivityRef.current) {
-        clearTimeout(inactivityRef.current);
-      }
-
-      // Resume after 12s of inactivity
-      inactivityRef.current = setTimeout(() => {
-        swiperRef.current?.autoplay?.start();
-        setIsPaused(false);
-      }, 12000);
-    }
-  }, []);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (inactivityRef.current) {
-        clearTimeout(inactivityRef.current);
-      }
-    };
-  }, []);
-
-  // ESC key to close modal
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closeModal();
-      }
-    };
-
-    if (modalType) {
-      window.addEventListener('keydown', handleEsc);
-      return () => window.removeEventListener('keydown', handleEsc);
-    }
-  }, [modalType, closeModal]);
 
   return (
     <section 
@@ -255,18 +184,51 @@ export const TestimonialSlider: React.FC = () => {
 
       {/* Swiper or Fallback */}
       {swiperFailed ? (
-        <FallbackSlider onOpenPdf={handleOpenPdf} onReadExcerpt={handleReadExcerpt} />
+        <FallbackGrid />
       ) : (
-        <div 
-          className="relative"
-          onMouseEnter={handleInteraction}
-          onFocus={handleInteraction}
-          data-autoplay={!reducedMotion}
-        >
+        <div className="relative px-4 lg:px-16">
+          {/* Left Navigation Button */}
+          <Button
+            variant="outline"
+            size="icon"
+            className={cn(
+              "swiper-btn-prev absolute left-0 top-1/2 -translate-y-1/2 z-20",
+              "w-12 h-12 lg:w-14 lg:h-14 rounded-full",
+              "bg-background/80 backdrop-blur-sm border-accent/30",
+              "hover:bg-accent hover:text-accent-foreground hover:border-accent",
+              "hover:scale-110 hover:shadow-lg hover:shadow-accent/30",
+              "transition-all duration-300",
+              "focus-ring"
+            )}
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </Button>
+
+          {/* Right Navigation Button */}
+          <Button
+            variant="outline"
+            size="icon"
+            className={cn(
+              "swiper-btn-next absolute right-0 top-1/2 -translate-y-1/2 z-20",
+              "w-12 h-12 lg:w-14 lg:h-14 rounded-full",
+              "bg-background/80 backdrop-blur-sm border-accent/30",
+              "hover:bg-accent hover:text-accent-foreground hover:border-accent",
+              "hover:scale-110 hover:shadow-lg hover:shadow-accent/30",
+              "transition-all duration-300",
+              "focus-ring"
+            )}
+            aria-label="Next testimonial"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </Button>
+
+          {/* Swiper Carousel */}
           <Swiper
             modules={[Navigation, Pagination, Autoplay, Keyboard, A11y]}
             spaceBetween={24}
             slidesPerView={1}
+            centeredSlides={false}
             navigation={{
               prevEl: '.swiper-btn-prev',
               nextEl: '.swiper-btn-next',
@@ -282,9 +244,9 @@ export const TestimonialSlider: React.FC = () => {
               pauseOnMouseEnter: true,
             }}
             breakpoints={{
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-              1280: { slidesPerView: 4 },
+              640: { slidesPerView: 2, spaceBetween: 20 },
+              1024: { slidesPerView: 3, spaceBetween: 24 },
+              1280: { slidesPerView: 4, spaceBetween: 28 },
             }}
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
@@ -296,98 +258,16 @@ export const TestimonialSlider: React.FC = () => {
               firstSlideMessage: 'This is the first testimonial',
               lastSlideMessage: 'This is the last testimonial',
             }}
-            className="pb-12"
+            className="pb-14"
           >
             {testimonialData.map((testimonial) => (
               <SwiperSlide key={testimonial.id}>
-                <TestimonialCard
-                  testimonial={testimonial}
-                  onOpenPdf={handleOpenPdf}
-                  onReadExcerpt={handleReadExcerpt}
-                />
+                <TestimonialCard testimonial={testimonial} />
               </SwiperSlide>
             ))}
           </Swiper>
-
-          {/* Custom Navigation Buttons */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="swiper-btn-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 hidden lg:flex focus-ring"
-            aria-label="Previous testimonial"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="swiper-btn-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 hidden lg:flex focus-ring"
-            aria-label="Next testimonial"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </Button>
         </div>
       )}
-
-      {/* PDF/Excerpt Modal */}
-      <Dialog open={!!modalType} onOpenChange={() => closeModal()}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-auto glass-card">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-display">
-              {modalType === 'pdf' ? (
-                <>Letter from {selectedTestimonial?.company}</>
-              ) : (
-                <>Testimonial from {selectedTestimonial?.name}</>
-              )}
-            </DialogTitle>
-            <DialogDescription>
-              {selectedTestimonial?.title} at {selectedTestimonial?.company}
-            </DialogDescription>
-          </DialogHeader>
-
-          {modalType === 'pdf' ? (
-            <div className="mt-4">
-              {/* PDF Viewer Placeholder */}
-              <div className="aspect-[8.5/11] bg-muted rounded-lg flex flex-col items-center justify-center p-8 text-center">
-                <FileText className="w-16 h-16 text-muted-foreground mb-4" />
-                <p className="text-lg font-medium mb-2">PDF Document</p>
-                <p className="text-sm text-muted-foreground mb-6">
-                  The full testimonial letter would be displayed here.
-                </p>
-                <Button
-                  variant="default"
-                  className="bg-accent text-accent-foreground"
-                  onClick={() => {
-                    // In production, this would be the actual PDF URL
-                    window.open(selectedTestimonial?.pdfUrl, '_blank');
-                  }}
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Open in New Tab
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-4 space-y-4">
-              <div className="flex items-start gap-4">
-                <img
-                  src={selectedTestimonial?.coverImage}
-                  alt={selectedTestimonial?.name}
-                  className="w-20 h-20 rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-semibold text-lg">{selectedTestimonial?.name}</p>
-                  <p className="text-muted-foreground">{selectedTestimonial?.title}</p>
-                  <p className="text-accent">{selectedTestimonial?.company}</p>
-                </div>
-              </div>
-              <blockquote className="text-xl italic text-muted-foreground border-l-4 border-accent pl-6 py-2">
-                "{selectedTestimonial?.fullQuote}"
-              </blockquote>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
 
       {/* Noscript Fallback */}
       <noscript>
@@ -416,7 +296,7 @@ export const TestimonialSlider: React.FC = () => {
                 rel="noopener noreferrer"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                View Full Letter (PDF)
+                Read PDF Letter
               </a>
             </div>
           ))}
