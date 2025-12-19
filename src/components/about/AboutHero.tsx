@@ -61,8 +61,8 @@ export const AboutHero: React.FC = () => {
   }, [reducedMotion]);
 
   const scrollToContent = () => {
-    const firstSection = document.getElementById('history-2019');
-    firstSection?.scrollIntoView({ behavior: 'smooth' });
+    const storySection = document.getElementById('company-story');
+    storySection?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (

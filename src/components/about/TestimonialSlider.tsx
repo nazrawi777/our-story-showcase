@@ -44,7 +44,11 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (
     <div
       ref={cardRef}
-      className="relative aspect-[3/4] rounded-2xl overflow-hidden group cursor-pointer"
+      className={cn(
+        "relative aspect-[3/4] rounded-2xl overflow-hidden group cursor-pointer",
+        "transition-all duration-500",
+        isHovered && "shadow-2xl shadow-accent/30 -translate-y-2"
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -55,7 +59,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
         loading="lazy"
         className={cn(
           "w-full h-full object-cover transition-all duration-700 ease-out",
-          isHovered && "scale-110 brightness-75"
+          isHovered && "scale-110 brightness-50"
         )}
       />
 
@@ -64,7 +68,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
         className={cn(
           "absolute inset-0 transition-all duration-500",
           isHovered 
-            ? "bg-gradient-to-t from-background via-background/70 to-background/30"
+            ? "bg-gradient-to-t from-background via-background/80 to-background/40"
             : "bg-gradient-to-t from-background/90 via-background/30 to-transparent"
         )}
       />
@@ -73,7 +77,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
       <div 
         className={cn(
           "absolute bottom-0 left-0 right-0 p-6 transition-all duration-500",
-          isHovered && "translate-y-[-20px]"
+          isHovered && "translate-y-[-60px] opacity-0"
         )}
       >
         <p className="text-xl font-display font-semibold text-foreground">
@@ -92,25 +96,27 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
         )}
         aria-hidden={!isHovered}
       >
-        {/* Decorative Quote */}
-        <div 
-          className={cn(
-            "text-8xl text-accent/20 font-serif transition-all duration-700",
-            isHovered ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-          )}
-        >
-          "
+        {/* Person Info on Hover */}
+        <div className={cn(
+          "text-center mb-6 transition-all duration-500 delay-100",
+          isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+        )}>
+          <p className="text-xl font-display font-semibold text-foreground">
+            {testimonial.name}
+          </p>
+          <p className="text-sm text-muted-foreground">{testimonial.title}</p>
+          <p className="text-sm font-medium text-accent">{testimonial.company}</p>
         </div>
 
         {/* Short Preview */}
         <p 
           className={cn(
-            "text-center text-foreground/90 text-sm leading-relaxed mb-8 max-w-[200px]",
-            "transition-all duration-500 delay-100",
+            "text-center text-foreground/80 text-sm leading-relaxed mb-8 max-w-[220px]",
+            "transition-all duration-500 delay-150",
             isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           )}
         >
-          {testimonial.excerpt}
+          "{testimonial.excerpt}"
         </p>
 
         {/* Read PDF Button */}
@@ -120,10 +126,10 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
           onClick={handleOpenPdf}
           className={cn(
             "bg-accent text-accent-foreground hover:bg-accent/90",
-            "shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40",
-            "transition-all duration-500 delay-150",
-            "hover:scale-105 active:scale-95",
-            isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            "shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/50",
+            "transition-all duration-500 delay-200",
+            "hover:scale-110 active:scale-95",
+            isHovered ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           )}
           aria-label={`Read PDF letter from ${testimonial.name} at ${testimonial.company}`}
         >

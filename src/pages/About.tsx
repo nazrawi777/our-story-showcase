@@ -20,6 +20,7 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { AboutHero } from '@/components/about/AboutHero';
+import { CompanyStory } from '@/components/about/CompanyStory';
 import { CinematicHistory } from '@/components/about/CinematicHistory';
 import { MVVGSection } from '@/components/about/MVVGSection';
 import { CompanyTimeline } from '@/components/about/CompanyTimeline';
@@ -72,7 +73,15 @@ const About: React.FC = () => {
         {/* A) Hero Section */}
         <AboutHero />
 
-        {/* B) Cinematic Company History */}
+        {/* B) Company Story - Long Paragraph Section */}
+        <CompanyStory />
+
+        {/* Decorative Divider */}
+        <div className="section-container py-0">
+          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+        </div>
+
+        {/* C) Cinematic Company History */}
         <CinematicHistory />
 
         {/* Decorative Divider */}
