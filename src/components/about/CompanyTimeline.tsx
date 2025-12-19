@@ -2,14 +2,13 @@
  * CompanyTimeline Component
  * 
  * Scroll-driven timeline (2021-2025) with:
- * - Scroll down: progresses from 2021 → 2025
- * - Scroll up: goes back through years
+ * - Vertical progress indicator on the left
+ * - Real-time year tracking as you scroll
+ * - Gallery image click to change hero image
  * - Medium-sized images with hover animations
- * - Mobile: Vertical layout with same scroll behavior
- * - No manual controls - pure scroll-based navigation
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { timelineData, type TimelineYear } from '@/data/aboutData';
@@ -23,15 +22,23 @@ interface TimelineCardProps {
   data: TimelineYear;
   index: number;
   reducedMotion: boolean;
+  isActive: boolean;
 }
 
 /**
  * Individual Timeline Year Card
  */
-const TimelineCard: React.FC<TimelineCardProps> = ({ data, index, reducedMotion }) => {
+const TimelineCard: React.FC<TimelineCardProps> = ({ data, index, reducedMotion, isActive }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [activeImage, setActiveImage] = useState(data.heroImage);
+
+  // Reset active image when card becomes active
+  useEffect(() => {
+    if (isActive) {
+      setActiveImage(data.heroImage);
+    }
+  }, [isActive, data.heroImage]);
 
   useEffect(() => {
     if (reducedMotion || !cardRef.current) return;
@@ -82,28 +89,32 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ data, index, reducedMotion 
     return () => ctx.revert();
   }, [reducedMotion]);
 
+  const handleGalleryClick = useCallback((imageSrc: string) => {
+    setActiveImage(imageSrc);
+  }, []);
+
   return (
     <div
       ref={cardRef}
+      id={`timeline-${data.year}`}
       className={cn(
         "timeline-card relative",
-        "grid gap-8 lg:gap-12",
-        index % 2 === 0 ? "lg:grid-cols-[1fr,1.5fr]" : "lg:grid-cols-[1.5fr,1fr]"
+        "grid gap-8 lg:gap-12 lg:grid-cols-[1fr,1.2fr]",
+        "transition-all duration-500",
+        isActive && "scale-[1.02]"
       )}
     >
       {/* Image Container */}
       <div
-        ref={imageRef}
         className={cn(
           "relative overflow-hidden rounded-2xl",
-          "aspect-[4/3] max-h-[400px]",
-          index % 2 === 1 && "lg:order-2"
+          "aspect-[4/3] max-h-[350px]"
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <img
-          src={data.heroImage}
+          src={activeImage}
           alt={`Company milestone ${data.year}`}
           loading="lazy"
           className={cn(
@@ -126,51 +137,25 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ data, index, reducedMotion 
           className={cn(
             "absolute bottom-4 left-4 glass-card px-5 py-3",
             "transition-all duration-500",
-            isHovered && "scale-110 shadow-2xl"
+            isHovered && "scale-110 shadow-2xl",
+            isActive && "ring-2 ring-accent"
           )}
         >
-          <span className="text-4xl lg:text-5xl font-display font-bold gradient-text">
+          <span className="text-3xl lg:text-4xl font-display font-bold gradient-text">
             {data.year}
           </span>
         </div>
-
-        {/* Optional Media Indicator */}
-        {data.mediaUrl && (
-          <div 
-            className={cn(
-              "absolute top-4 right-4 glass-card p-2 rounded-full",
-              "transition-transform duration-300",
-              isHovered && "scale-110"
-            )}
-          >
-            {data.mediaType === 'video' ? (
-              <span className="text-xs font-medium text-accent">▶ Video</span>
-            ) : (
-              <span className="text-xs font-medium text-accent">GIF</span>
-            )}
-          </div>
-        )}
       </div>
 
       {/* Content */}
-      <div 
-        className={cn(
-          "flex flex-col justify-center space-y-6",
-          index % 2 === 1 && "lg:order-1 lg:text-right lg:items-end"
-        )}
-      >
+      <div className="flex flex-col justify-center space-y-6">
         {/* Summary */}
         <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-lg">
           {data.summary}
         </p>
 
         {/* KPI Badges */}
-        <div 
-          className={cn(
-            "flex flex-wrap gap-4",
-            index % 2 === 1 && "lg:justify-end"
-          )}
-        >
+        <div className="flex flex-wrap gap-4">
           {data.kpis.map((kpi, i) => (
             <div
               key={i}
@@ -190,29 +175,132 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ data, index, reducedMotion 
           ))}
         </div>
 
-        {/* Gallery Thumbnails */}
+        {/* Gallery Thumbnails - Clickable */}
         {data.gallery.length > 0 && (
-          <div 
-            className={cn(
-              "flex gap-3 overflow-x-auto pb-2",
-              index % 2 === 1 && "lg:justify-end"
-            )}
-          >
-            {data.gallery.slice(0, 3).map((img, i) => (
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {/* Hero image as first thumbnail */}
+            <button
+              onClick={() => handleGalleryClick(data.heroImage)}
+              className={cn(
+                "w-16 h-16 rounded-lg flex-shrink-0 overflow-hidden",
+                "transition-all duration-300 cursor-pointer",
+                "hover:scale-110 focus-ring",
+                activeImage === data.heroImage 
+                  ? "ring-2 ring-accent opacity-100" 
+                  : "opacity-60 hover:opacity-100"
+              )}
+              aria-label={`View main ${data.year} image`}
+            >
               <img
-                key={i}
-                src={img}
-                alt={`${data.year} gallery ${i + 1}`}
-                loading="lazy"
-                className={cn(
-                  "w-16 h-16 object-cover rounded-lg flex-shrink-0",
-                  "opacity-60 hover:opacity-100 transition-all duration-300",
-                  "hover:scale-110 cursor-pointer"
-                )}
+                src={data.heroImage}
+                alt={`${data.year} main`}
+                className="w-full h-full object-cover"
               />
+            </button>
+            
+            {data.gallery.slice(0, 3).map((img, i) => (
+              <button
+                key={i}
+                onClick={() => handleGalleryClick(img)}
+                className={cn(
+                  "w-16 h-16 rounded-lg flex-shrink-0 overflow-hidden",
+                  "transition-all duration-300 cursor-pointer",
+                  "hover:scale-110 focus-ring",
+                  activeImage === img 
+                    ? "ring-2 ring-accent opacity-100" 
+                    : "opacity-60 hover:opacity-100"
+                )}
+                aria-label={`View ${data.year} gallery image ${i + 1}`}
+              >
+                <img
+                  src={img}
+                  alt={`${data.year} gallery ${i + 1}`}
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                />
+              </button>
             ))}
           </div>
         )}
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Vertical Year Indicator Component
+ */
+const VerticalYearIndicator: React.FC<{ 
+  activeYear: number;
+  progress: number;
+}> = ({ activeYear, progress }) => {
+  const years = timelineData.map(d => d.year);
+  
+  return (
+    <div className="hidden lg:flex fixed left-8 xl:left-12 top-1/2 -translate-y-1/2 z-40">
+      <div className="relative flex flex-col items-center">
+        {/* Progress Line Background */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-muted rounded-full" />
+        
+        {/* Progress Line Fill */}
+        <div 
+          className="absolute left-1/2 -translate-x-1/2 top-0 w-0.5 bg-accent rounded-full transition-all duration-300"
+          style={{ height: `${progress}%` }}
+        />
+        
+        {/* Year Dots */}
+        <div className="relative flex flex-col gap-12">
+          {years.map((year, index) => {
+            const isActive = year === activeYear;
+            const isPast = years.indexOf(activeYear) >= index;
+            
+            return (
+              <a
+                key={year}
+                href={`#timeline-${year}`}
+                className="flex items-center gap-3 group"
+                aria-label={`Jump to year ${year}`}
+              >
+                {/* Year Label */}
+                <span 
+                  className={cn(
+                    "text-sm font-medium transition-all duration-300",
+                    isActive 
+                      ? "text-accent font-bold scale-110" 
+                      : isPast 
+                        ? "text-foreground/70"
+                        : "text-muted-foreground"
+                  )}
+                >
+                  {year}
+                </span>
+                
+                {/* Dot */}
+                <div 
+                  className={cn(
+                    "relative w-4 h-4 rounded-full transition-all duration-300",
+                    "flex items-center justify-center",
+                    isActive 
+                      ? "bg-accent scale-125 shadow-lg shadow-accent/50" 
+                      : isPast 
+                        ? "bg-accent/60"
+                        : "bg-muted"
+                  )}
+                >
+                  {isActive && (
+                    <div className="absolute inset-0 rounded-full bg-accent animate-ping opacity-30" />
+                  )}
+                  <div 
+                    className={cn(
+                      "w-2 h-2 rounded-full transition-all duration-300",
+                      isActive ? "bg-accent-foreground" : "bg-transparent"
+                    )}
+                  />
+                </div>
+              </a>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -224,10 +312,12 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ data, index, reducedMotion 
 export const CompanyTimeline: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const [activeYear, setActiveYear] = useState(timelineData[0].year);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (reducedMotion || !sectionRef.current) return;
+    if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
       // Animate section title
@@ -250,18 +340,37 @@ export const CompanyTimeline: React.FC = () => {
         );
       }
 
-      // Progress indicator
-      const progressBar = sectionRef.current?.querySelector('.progress-bar-fill');
-      if (progressBar && timelineRef.current) {
-        gsap.to(progressBar, {
-          scaleX: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: timelineRef.current,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            scrub: 0.5,
+      // Track scroll progress and active year
+      if (timelineRef.current) {
+        ScrollTrigger.create({
+          trigger: timelineRef.current,
+          start: 'top 60%',
+          end: 'bottom 40%',
+          onUpdate: (self) => {
+            const progress = self.progress * 100;
+            setScrollProgress(progress);
+            
+            // Calculate which year should be active based on scroll position
+            const yearIndex = Math.min(
+              Math.floor(self.progress * timelineData.length),
+              timelineData.length - 1
+            );
+            setActiveYear(timelineData[yearIndex].year);
           },
+        });
+
+        // Individual year tracking for more precise detection
+        timelineData.forEach((data) => {
+          const cardElement = document.getElementById(`timeline-${data.year}`);
+          if (cardElement) {
+            ScrollTrigger.create({
+              trigger: cardElement,
+              start: 'top 50%',
+              end: 'bottom 50%',
+              onEnter: () => setActiveYear(data.year),
+              onEnterBack: () => setActiveYear(data.year),
+            });
+          }
         });
       }
     }, sectionRef);
@@ -272,9 +381,12 @@ export const CompanyTimeline: React.FC = () => {
   return (
     <section 
       ref={sectionRef}
-      className="section-container"
+      className="section-container relative"
       aria-labelledby="timeline-title"
     >
+      {/* Vertical Year Indicator */}
+      <VerticalYearIndicator activeYear={activeYear} progress={scrollProgress} />
+
       {/* Section Header */}
       <div className="section-title mb-16 text-center">
         <h2 
@@ -287,35 +399,37 @@ export const CompanyTimeline: React.FC = () => {
           Five years of growth, innovation, and transformation. Scroll to explore our journey.
         </p>
         
-        {/* Progress Bar */}
-        <div className="max-w-md mx-auto">
-          <div className="progress-bar h-1 bg-muted rounded-full overflow-hidden">
+        {/* Mobile Progress Bar */}
+        <div className="lg:hidden max-w-md mx-auto">
+          <div className="h-1 bg-muted rounded-full overflow-hidden">
             <div 
-              className="progress-bar-fill h-full bg-accent origin-left"
-              style={{ transform: 'scaleX(0)' }}
+              className="h-full bg-accent transition-all duration-300"
+              style={{ width: `${scrollProgress}%` }}
             />
           </div>
           <div className="flex justify-between mt-2 text-sm text-muted-foreground">
             <span>{timelineData[0].year}</span>
+            <span className="font-bold text-accent">{activeYear}</span>
             <span>{timelineData[timelineData.length - 1].year}</span>
           </div>
         </div>
       </div>
 
       {/* Timeline Cards */}
-      <div ref={timelineRef} className="space-y-24 lg:space-y-32">
+      <div ref={timelineRef} className="space-y-24 lg:space-y-32 lg:pl-24 xl:pl-32">
         {timelineData.map((data, index) => (
           <TimelineCard
             key={data.year}
             data={data}
             index={index}
             reducedMotion={reducedMotion}
+            isActive={data.year === activeYear}
           />
         ))}
       </div>
 
       {/* End Marker */}
-      <div className="mt-24 text-center">
+      <div className="mt-24 text-center lg:pl-24 xl:pl-32">
         <div className="inline-flex items-center gap-4 glass-card px-8 py-4">
           <span className="text-2xl font-display font-bold gradient-text">
             The Future Awaits
