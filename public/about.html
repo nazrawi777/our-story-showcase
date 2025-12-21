@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- GSAP Libraries (local) -->
+  <script src="assets/gsap.min.js"></script>
+  <script src="assets/ScrollTrigger.min.js"></script>
   <style>
     /* CSS Reset & Variables */
     *, *::before, *::after {
@@ -103,8 +106,25 @@
 
     .btn-primary:hover {
       background: hsl(38 92% 45%);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px -10px hsla(38, 92%, 50%, 0.4);
+    }
+
+    .btn-outline:hover {
+      background: hsl(var(--muted));
+      border-color: hsl(var(--muted-foreground));
+    }
+
+    /* GSAP will handle CTA button animations */
+    .btn-cta {
+      will-change: transform, box-shadow;
+    }
+
+    @keyframes shadow-pulse {
+      0%, 100% {
+        box-shadow: 0 10px 30px -10px hsla(38, 92%, 50%, 0.4);
+      }
+      50% {
+        box-shadow: 0 15px 40px -10px hsla(38, 92%, 50%, 0.6);
+      }
     }
 
     .btn-outline {
@@ -113,10 +133,6 @@
       border: 1px solid hsl(var(--border));
     }
 
-    .btn-outline:hover {
-      background: hsl(var(--muted));
-      border-color: hsl(var(--muted-foreground));
-    }
 
     /* Container */
     .container {
@@ -176,16 +192,24 @@
       animation: pulse-glow 3s ease-in-out infinite;
     }
 
-    /* Scroll Reveal */
+    /* Scroll Reveal - GSAP handles these now */
     .reveal {
       opacity: 0;
       transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
     .reveal.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* Hero elements start hidden for GSAP */
+    .hero-title,
+    .hero-subtitle,
+    .hero-badge,
+    .hero-cta,
+    .scroll-indicator {
+      opacity: 0;
     }
 
     /* ==================== HERO SECTION ==================== */
@@ -217,7 +241,7 @@
       width: 24rem;
       height: 24rem;
       background: hsla(38, 92%, 50%, 0.1);
-      animation: float 8s ease-in-out infinite;
+      /* GSAP will handle animation */
     }
 
     .hero-orb-2 {
@@ -226,8 +250,7 @@
       width: 16rem;
       height: 16rem;
       background: hsla(38, 92%, 50%, 0.05);
-      animation: float 8s ease-in-out infinite;
-      animation-delay: 1s;
+      /* GSAP will handle animation */
     }
 
     .hero-grid {
@@ -1253,8 +1276,8 @@
       </p>
       
       <div class="hero-cta">
-        <a href="#company-story" class="btn btn-primary">Explore Our Journey</a>
-        <a href="#footer-cta" class="btn btn-outline">Join Our Team</a>
+        <a href="#company-story" class="btn btn-primary btn-cta">Explore Our Journey</a>
+        <a href="#footer-cta" class="btn btn-outline btn-cta">Join Our Team</a>
       </div>
     </div>
     
@@ -1881,23 +1904,325 @@
 
   <!-- ==================== JAVASCRIPT ==================== -->
   <script>
-    // Scroll Reveal Animation
-    const revealElements = document.querySelectorAll('.reveal');
-    
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
-    
-    revealElements.forEach(el => revealObserver.observe(el));
+    // Register GSAP ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
 
-    // MVVG Card Expand/Collapse
+    // ==================== HERO ANIMATIONS (GSAP) ====================
+    
+    // Hero headline fade-up on load
+    gsap.fromTo('.hero-title', 
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: 0.2 }
+    );
+
+    // Hero badge fade-up
+    gsap.fromTo('.hero-badge',
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.1 }
+    );
+
+    // Hero subtitle fade-up
+    gsap.fromTo('.hero-subtitle',
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.4 }
+    );
+
+    // Hero CTA buttons fade-up
+    gsap.fromTo('.hero-cta',
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.6 }
+    );
+
+    // Scroll indicator fade-in
+    gsap.fromTo('.scroll-indicator',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 1 }
+    );
+
+    // ==================== FLOATING ORBS (GSAP YOYO) ====================
+    
+    // Hero orb 1 - slow vertical float loop
+    gsap.to('.hero-orb-1', {
+      y: -30,
+      rotation: 5,
+      duration: 4,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1
+    });
+
+    // Hero orb 2 - slow vertical float loop (offset)
+    gsap.to('.hero-orb-2', {
+      y: -25,
+      rotation: -3,
+      duration: 5,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: 1
+    });
+
+    // Story orbs
+    gsap.to('.story-orb-1', {
+      y: -20,
+      duration: 6,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1
+    });
+
+    gsap.to('.story-orb-2', {
+      y: -15,
+      duration: 7,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: 2
+    });
+
+    // ==================== CTA BUTTON HOVER ANIMATIONS ====================
+    
+    const ctaButtons = document.querySelectorAll('.btn-cta');
+    
+    ctaButtons.forEach(btn => {
+      // Hover scale + shadow pulse
+      btn.addEventListener('mouseenter', () => {
+        gsap.to(btn, {
+          scale: 1.05,
+          boxShadow: '0 15px 40px -10px hsla(38, 92%, 50%, 0.5)',
+          duration: 0.25,
+          ease: 'power2.out'
+        });
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, {
+          scale: 1,
+          boxShadow: '0 10px 30px -10px hsla(38, 92%, 50%, 0.3)',
+          duration: 0.25,
+          ease: 'power2.out'
+        });
+      });
+    });
+
+    // ==================== SCROLL-TRIGGERED REVEALS (GSAP + ScrollTrigger) ====================
+    
+    // Timeline entries - staggered fade/slide
+    gsap.utils.toArray('.history-entry').forEach((entry, index) => {
+      gsap.fromTo(entry,
+        { opacity: 0, x: -50, y: 30 },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: entry,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          },
+          delay: index * 0.1
+        }
+      );
+    });
+
+    // MVVG cards - staggered reveal
+    gsap.utils.toArray('.mvvg-card').forEach((card, index) => {
+      gsap.fromTo(card,
+        { opacity: 0, y: 50, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          },
+          delay: index * 0.15
+        }
+      );
+    });
+
+    // Timeline cards (Company Way) - staggered reveal
+    gsap.utils.toArray('.timeline-card').forEach((card, index) => {
+      gsap.fromTo(card,
+        { opacity: 0, y: 60 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+          },
+          delay: index * 0.1
+        }
+      );
+    });
+
+    // Story section paragraphs
+    gsap.utils.toArray('.story-paragraphs .reveal, .story-header.reveal').forEach((el, index) => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          },
+          delay: index * 0.1
+        }
+      );
+    });
+
+    // History header
+    gsap.fromTo('.history-header.reveal',
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.history-header',
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+
+    // MVVG header
+    gsap.fromTo('.mvvg-header.reveal',
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.mvvg-header',
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+
+    // Timeline header
+    gsap.fromTo('.timeline-header.reveal',
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.timeline-header',
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+
+    // Testimonials header
+    gsap.fromTo('.testimonials-header.reveal',
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.testimonials-header',
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+
+    // Footer CTA
+    gsap.fromTo('.footer-cta-card.reveal',
+      { opacity: 0, y: 50, scale: 0.98 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.footer-cta-card',
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+
+    // History closing text
+    gsap.fromTo('.history-closing.reveal',
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.history-closing',
+          start: 'top 90%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+
+    // ==================== TESTIMONIALS SLIDER ====================
+    
+    const slider = document.getElementById('testimonials-slider');
+    const prevBtn = document.getElementById('testimonials-prev');
+    const nextBtn = document.getElementById('testimonials-next');
+    let autoScrollInterval;
+    let isHovering = false;
+
+    // Smooth auto-scroll
+    function startAutoScroll() {
+      autoScrollInterval = setInterval(() => {
+        if (!isHovering) {
+          const maxScroll = slider.scrollWidth - slider.clientWidth;
+          if (slider.scrollLeft >= maxScroll - 10) {
+            // Reset to start
+            gsap.to(slider, { scrollLeft: 0, duration: 0.8, ease: 'power2.inOut' });
+          } else {
+            gsap.to(slider, { scrollLeft: slider.scrollLeft + 340, duration: 0.6, ease: 'power2.out' });
+          }
+        }
+      }, 4000);
+    }
+
+    // Pause on hover
+    slider.addEventListener('mouseenter', () => { isHovering = true; });
+    slider.addEventListener('mouseleave', () => { isHovering = false; });
+
+    // Manual navigation with GSAP
+    prevBtn.addEventListener('click', () => {
+      gsap.to(slider, { scrollLeft: slider.scrollLeft - 340, duration: 0.5, ease: 'power2.out' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+      gsap.to(slider, { scrollLeft: slider.scrollLeft + 340, duration: 0.5, ease: 'power2.out' });
+    });
+
+    // Start auto-scroll
+    startAutoScroll();
+
+    // ==================== MVVG CARD EXPAND/COLLAPSE ====================
+    
     const mvvgCards = document.querySelectorAll('.mvvg-card');
     
     mvvgCards.forEach(card => {
@@ -1925,7 +2250,8 @@
       });
     });
 
-    // Timeline Gallery Image Switching
+    // ==================== TIMELINE GALLERY IMAGE SWITCHING ====================
+    
     const galleryThumbs = document.querySelectorAll('.timeline-gallery-thumb');
     
     galleryThumbs.forEach(thumb => {
@@ -1939,12 +2265,27 @@
         siblings.forEach(s => s.classList.remove('active'));
         thumb.classList.add('active');
         
-        // Update hero image
-        heroImg.src = newSrc;
+        // Animate image swap with GSAP
+        gsap.to(heroImg, {
+          opacity: 0,
+          scale: 1.02,
+          duration: 0.2,
+          ease: 'power2.in',
+          onComplete: () => {
+            heroImg.src = newSrc;
+            gsap.to(heroImg, {
+              opacity: 1,
+              scale: 1,
+              duration: 0.3,
+              ease: 'power2.out'
+            });
+          }
+        });
       });
     });
 
-    // Year Indicator Logic
+    // ==================== YEAR INDICATOR LOGIC ====================
+    
     const timelineSection = document.getElementById('company-way');
     const yearIndicator = document.getElementById('year-indicator');
     const yearDots = document.querySelectorAll('.year-dot');
@@ -1958,7 +2299,11 @@
     function scrollToYear(yearId) {
       const element = document.getElementById(yearId);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        gsap.to(window, {
+          scrollTo: { y: element, offsetY: window.innerHeight * 0.3 },
+          duration: 0.8,
+          ease: 'power2.inOut'
+        });
       }
     }
     
@@ -2009,19 +2354,6 @@
     
     window.addEventListener('scroll', updateYearIndicator);
     updateYearIndicator();
-
-    // Testimonials Navigation
-    const slider = document.getElementById('testimonials-slider');
-    const prevBtn = document.getElementById('testimonials-prev');
-    const nextBtn = document.getElementById('testimonials-next');
-    
-    prevBtn.addEventListener('click', () => {
-      slider.scrollBy({ left: -340, behavior: 'smooth' });
-    });
-    
-    nextBtn.addEventListener('click', () => {
-      slider.scrollBy({ left: 340, behavior: 'smooth' });
-    });
   </script>
 </body>
 </html>
