@@ -1,0 +1,2027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Building the Future Together</title>
+  <meta name="description" content="Discover our story, mission, and the passionate team behind our innovation. Learn about our journey from a small startup to an industry leader.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Reset & Variables */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --background: 222 47% 6%;
+      --foreground: 45 20% 95%;
+      --card: 222 40% 8%;
+      --card-foreground: 45 20% 95%;
+      --muted: 222 30% 15%;
+      --muted-foreground: 45 10% 65%;
+      --accent: 38 92% 50%;
+      --accent-foreground: 222 47% 6%;
+      --border: 222 30% 18%;
+      --ring: 38 92% 50%;
+      --radius: 0.75rem;
+      
+      --font-display: 'DM Sans', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      
+      --gradient-hero: linear-gradient(180deg, hsl(222 47% 6%) 0%, hsl(222 50% 4%) 100%);
+      --gradient-accent: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(32 95% 44%) 100%);
+      --glass-bg: hsla(222, 40%, 10%, 0.6);
+      --glass-border: hsla(222, 30%, 25%, 0.3);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: hsl(var(--background));
+      color: hsl(var(--foreground));
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .gradient-text {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Glass Card */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.75rem;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      border: none;
+      outline: none;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid hsl(var(--ring));
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background: hsl(var(--accent));
+      color: hsl(var(--accent-foreground));
+    }
+
+    .btn-primary:hover {
+      background: hsl(38 92% 45%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -10px hsla(38, 92%, 50%, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: hsl(var(--foreground));
+      border: 1px solid hsl(var(--border));
+    }
+
+    .btn-outline:hover {
+      background: hsl(var(--muted));
+      border-color: hsl(var(--muted-foreground));
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Section Badge */
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      color: hsl(var(--accent));
+      margin-bottom: 1.5rem;
+    }
+
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-bounce {
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==================== HERO SECTION ==================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-hero);
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+
+    .hero-orb-1 {
+      top: 25%;
+      left: 25%;
+      width: 24rem;
+      height: 24rem;
+      background: hsla(38, 92%, 50%, 0.1);
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .hero-orb-2 {
+      bottom: 25%;
+      right: 25%;
+      width: 16rem;
+      height: 16rem;
+      background: hsla(38, 92%, 50%, 0.05);
+      animation: float 8s ease-in-out infinite;
+      animation-delay: 1s;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      background-image: 
+        linear-gradient(hsla(38, 92%, 50%, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(38, 92%, 50%, 0.3) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 1.5rem;
+      max-width: 64rem;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin-bottom: 2rem;
+      font-size: 0.875rem;
+      color: hsl(var(--accent));
+    }
+
+    .hero-badge svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      font-weight: 700;
+      margin-bottom: 2rem;
+      line-height: 1.1;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.125rem, 2vw, 1.5rem);
+      color: hsl(var(--muted-foreground));
+      max-width: 48rem;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .hero-cta {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+
+    .hero-cta .btn {
+      min-width: 200px;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: hsl(var(--muted-foreground));
+      cursor: pointer;
+      transition: color 0.3s ease;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+    }
+
+    .scroll-indicator:hover {
+      color: hsl(var(--foreground));
+    }
+
+    .scroll-indicator span {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    .scroll-indicator svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    /* ==================== COMPANY STORY SECTION ==================== */
+    .story-section {
+      position: relative;
+      padding: 8rem 0;
+      overflow: hidden;
+    }
+
+    .story-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .story-orb-1 {
+      top: 10%;
+      right: -10%;
+      width: 20rem;
+      height: 20rem;
+      background: hsla(38, 92%, 50%, 0.08);
+      animation: float 10s ease-in-out infinite;
+    }
+
+    .story-orb-2 {
+      bottom: 20%;
+      left: -10%;
+      width: 16rem;
+      height: 16rem;
+      background: hsla(280, 70%, 50%, 0.05);
+      animation: float 12s ease-in-out infinite;
+      animation-delay: 2s;
+    }
+
+    .story-content {
+      position: relative;
+      z-index: 10;
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+
+    .story-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .story-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .story-intro {
+      font-size: 1.25rem;
+      color: hsl(var(--muted-foreground));
+      font-style: italic;
+    }
+
+    .story-paragraphs {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .story-paragraphs p {
+      font-size: 1.125rem;
+      line-height: 1.8;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .story-quote {
+      position: relative;
+      margin: 3rem 0;
+      padding: 2rem 2.5rem;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: hsl(var(--foreground));
+      border-left: 4px solid hsl(var(--accent));
+    }
+
+    .story-quote::before {
+      content: '"';
+      position: absolute;
+      top: -1rem;
+      left: 1rem;
+      font-size: 5rem;
+      font-family: Georgia, serif;
+      color: hsl(var(--accent));
+      opacity: 0.3;
+      line-height: 1;
+    }
+
+    /* ==================== HISTORY SECTION ==================== */
+    .history-section {
+      position: relative;
+      padding: 8rem 0;
+      background: linear-gradient(180deg, transparent 0%, hsla(222, 50%, 4%, 0.5) 50%, transparent 100%);
+    }
+
+    .history-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .history-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+
+    .history-timeline {
+      position: relative;
+      max-width: 48rem;
+      margin: 0 auto;
+      padding-left: 3rem;
+    }
+
+    .history-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, 
+        hsl(var(--accent)) 0%, 
+        hsl(var(--muted)) 50%, 
+        hsl(var(--accent)) 100%);
+    }
+
+    .history-entry {
+      position: relative;
+      padding-bottom: 4rem;
+    }
+
+    .history-entry:last-child {
+      padding-bottom: 0;
+    }
+
+    .history-year-badge {
+      position: absolute;
+      left: -3rem;
+      transform: translateX(-50%);
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: hsl(var(--accent-foreground));
+    }
+
+    .history-year-badge.amber { background: hsl(38 92% 50%); }
+    .history-year-badge.rose { background: hsl(350 89% 60%); }
+    .history-year-badge.emerald { background: hsl(142 71% 45%); }
+    .history-year-badge.violet { background: hsl(263 70% 50%); }
+    .history-year-badge.sky { background: hsl(199 89% 48%); }
+
+    .history-content {
+      padding-left: 1.5rem;
+    }
+
+    .history-year-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .history-year-label.amber { color: hsl(38 92% 50%); }
+    .history-year-label.rose { color: hsl(350 89% 60%); }
+    .history-year-label.emerald { color: hsl(142 71% 45%); }
+    .history-year-label.violet { color: hsl(263 70% 50%); }
+    .history-year-label.sky { color: hsl(199 89% 48%); }
+
+    .history-entry-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .history-line {
+      width: 4rem;
+      height: 3px;
+      margin-bottom: 1rem;
+      border-radius: 2px;
+    }
+
+    .history-line.amber { background: hsl(38 92% 50%); }
+    .history-line.rose { background: hsl(350 89% 60%); }
+    .history-line.emerald { background: hsl(142 71% 45%); }
+    .history-line.violet { background: hsl(263 70% 50%); }
+    .history-line.sky { background: hsl(199 89% 48%); }
+
+    .history-blurb {
+      font-size: 1.0625rem;
+      line-height: 1.8;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .history-blockquote {
+      margin-top: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      background: hsla(142, 71%, 45%, 0.1);
+      border-left: 3px solid hsl(142 71% 45%);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: hsl(var(--foreground));
+    }
+
+    .history-closing {
+      text-align: center;
+      margin-top: 4rem;
+      font-size: 1.25rem;
+      color: hsl(var(--muted-foreground));
+      font-style: italic;
+    }
+
+    /* ==================== MVVG SECTION ==================== */
+    .mvvg-section {
+      padding: 8rem 0;
+    }
+
+    .mvvg-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .mvvg-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+
+    .mvvg-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .mvvg-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .mvvg-card {
+      padding: 2rem;
+      border-radius: var(--radius);
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .mvvg-card:hover {
+      border-color: hsl(var(--accent) / 0.5);
+      box-shadow: 0 0 40px -10px hsl(var(--accent) / 0.2);
+    }
+
+    .mvvg-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .mvvg-icon {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      background: hsl(var(--accent) / 0.1);
+      color: hsl(var(--accent));
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .mvvg-card:hover .mvvg-icon {
+      background: hsl(var(--accent) / 0.2);
+      transform: scale(1.1);
+    }
+
+    .mvvg-icon svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .mvvg-card-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .mvvg-type {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: hsl(var(--accent));
+    }
+
+    .mvvg-summary {
+      color: hsl(var(--muted-foreground));
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .mvvg-expand-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: hsl(var(--accent));
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-family: inherit;
+      transition: gap 0.3s ease;
+    }
+
+    .mvvg-expand-btn:hover {
+      gap: 0.75rem;
+    }
+
+    .mvvg-expand-btn svg {
+      width: 1rem;
+      height: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .mvvg-card.expanded .mvvg-expand-btn svg {
+      transform: rotate(180deg);
+    }
+
+    .mvvg-expanded-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+      opacity: 0;
+    }
+
+    .mvvg-card.expanded .mvvg-expanded-content {
+      max-height: 500px;
+      opacity: 1;
+      margin-top: 1.5rem;
+    }
+
+    .mvvg-expanded-content p {
+      color: hsl(var(--muted-foreground));
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .mvvg-expanded-content ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .mvvg-expanded-content li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .mvvg-expanded-content li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: hsl(var(--accent));
+    }
+
+    /* ==================== TIMELINE SECTION ==================== */
+    .timeline-section {
+      position: relative;
+      padding: 8rem 0;
+      background: linear-gradient(180deg, transparent 0%, hsla(222, 50%, 4%, 0.5) 50%, transparent 100%);
+    }
+
+    .timeline-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .timeline-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+
+    .timeline-mobile-progress {
+      display: block;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    @media (min-width: 1024px) {
+      .timeline-mobile-progress {
+        display: none;
+      }
+    }
+
+    .timeline-mobile-progress .current-year {
+      font-size: 2rem;
+      font-weight: 700;
+      color: hsl(var(--accent));
+    }
+
+    .timeline-mobile-bar {
+      height: 4px;
+      background: hsl(var(--muted));
+      border-radius: 2px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+
+    .timeline-mobile-bar-fill {
+      height: 100%;
+      background: hsl(var(--accent));
+      transition: width 0.3s ease;
+    }
+
+    .timeline-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+
+    .timeline-card {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 2rem;
+      border-radius: var(--radius);
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+    }
+
+    @media (min-width: 768px) {
+      .timeline-card {
+        grid-template-columns: 1fr 1fr;
+        padding: 2.5rem;
+      }
+    }
+
+    .timeline-card-image {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 16/10;
+    }
+
+    .timeline-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .timeline-card:hover .timeline-card-image img {
+      transform: scale(1.05);
+    }
+
+    .timeline-year-overlay {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: hsl(var(--accent));
+    }
+
+    .timeline-card-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .timeline-card-year {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: hsl(var(--accent));
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-card-summary {
+      font-size: 1.0625rem;
+      line-height: 1.8;
+      color: hsl(var(--muted-foreground));
+      margin-bottom: 1.5rem;
+    }
+
+    .timeline-kpis {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .timeline-kpi {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.875rem;
+      font-size: 0.8125rem;
+      border-radius: 9999px;
+      background: hsl(var(--muted));
+      color: hsl(var(--foreground));
+    }
+
+    .timeline-kpi-value {
+      font-weight: 600;
+      color: hsl(var(--accent));
+    }
+
+    .timeline-gallery {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+
+    .timeline-gallery-thumb {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: calc(var(--radius) / 2);
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      opacity: 0.6;
+    }
+
+    .timeline-gallery-thumb:hover,
+    .timeline-gallery-thumb.active {
+      opacity: 1;
+      border-color: hsl(var(--accent));
+    }
+
+    .timeline-gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Vertical Year Indicator */
+    .year-indicator {
+      display: none;
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      padding: 1.5rem 1rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .year-indicator.visible {
+      opacity: 1;
+    }
+
+    @media (min-width: 1024px) {
+      .year-indicator {
+        display: block;
+      }
+    }
+
+    .year-indicator-track {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .year-indicator-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: hsl(var(--muted));
+      transform: translateX(-50%);
+    }
+
+    .year-indicator-progress {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 2px;
+      background: hsl(var(--accent));
+      transform: translateX(-50%);
+      transition: height 0.3s ease;
+    }
+
+    .year-dot {
+      position: relative;
+      z-index: 1;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: hsl(var(--card));
+      border: 2px solid hsl(var(--border));
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: hsl(var(--muted-foreground));
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .year-dot:hover {
+      border-color: hsl(var(--accent));
+      color: hsl(var(--accent));
+    }
+
+    .year-dot.active {
+      background: hsl(var(--accent));
+      border-color: hsl(var(--accent));
+      color: hsl(var(--accent-foreground));
+      transform: scale(1.15);
+    }
+
+    .year-indicator-current {
+      margin-top: 1rem;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: hsl(var(--accent));
+      background: hsl(var(--accent) / 0.1);
+      border-radius: 9999px;
+    }
+
+    /* ==================== TESTIMONIALS SECTION ==================== */
+    .testimonials-section {
+      padding: 8rem 0;
+      overflow: hidden;
+    }
+
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .testimonials-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 1rem;
+    }
+
+    .testimonials-subtitle {
+      font-size: 1.125rem;
+      color: hsl(var(--muted-foreground));
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+
+    .testimonials-container {
+      position: relative;
+    }
+
+    .testimonials-slider {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 1rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .testimonials-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .testimonial-card {
+      flex: 0 0 280px;
+      scroll-snap-align: start;
+      position: relative;
+      aspect-ratio: 3/4;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    @media (min-width: 640px) {
+      .testimonial-card {
+        flex: 0 0 320px;
+      }
+    }
+
+    .testimonial-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .testimonial-card:hover .testimonial-image {
+      transform: scale(1.05);
+    }
+
+    .testimonial-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 30%, hsla(222, 47%, 6%, 0.95) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+      transition: background 0.3s ease;
+    }
+
+    .testimonial-card:hover .testimonial-overlay {
+      background: linear-gradient(180deg, hsla(222, 47%, 6%, 0.3) 0%, hsla(222, 47%, 6%, 0.98) 100%);
+    }
+
+    .testimonial-info {
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .testimonial-card:hover .testimonial-info {
+      transform: translateY(-60px);
+    }
+
+    .testimonial-name {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .testimonial-title {
+      font-size: 0.875rem;
+      color: hsl(var(--accent));
+      margin-bottom: 0.125rem;
+    }
+
+    .testimonial-company {
+      font-size: 0.8125rem;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .testimonial-hover-content {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover .testimonial-hover-content {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .testimonial-excerpt {
+      font-size: 0.875rem;
+      font-style: italic;
+      color: hsl(var(--muted-foreground));
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .testimonial-pdf-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: hsl(var(--accent));
+      background: hsl(var(--accent) / 0.1);
+      border: 1px solid hsl(var(--accent) / 0.3);
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .testimonial-pdf-btn:hover {
+      background: hsl(var(--accent) / 0.2);
+    }
+
+    .testimonial-pdf-btn svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .testimonials-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .testimonials-nav-btn {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      color: hsl(var(--foreground));
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .testimonials-nav-btn:hover {
+      background: hsl(var(--muted));
+      border-color: hsl(var(--accent));
+      color: hsl(var(--accent));
+    }
+
+    .testimonials-nav-btn svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    /* ==================== FOOTER CTA SECTION ==================== */
+    .footer-cta {
+      padding: 8rem 0;
+    }
+
+    .footer-cta-card {
+      text-align: center;
+      padding: 4rem 2rem;
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+
+    .footer-cta-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-cta-text {
+      font-size: 1.125rem;
+      color: hsl(var(--muted-foreground));
+      max-width: 36rem;
+      margin: 0 auto 2rem;
+    }
+
+    .footer-cta-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .footer-cta-buttons {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+
+    /* Section Divider */
+    .section-divider {
+      height: 1px;
+      max-width: 20rem;
+      margin: 0 auto;
+      background: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: hsl(var(--muted));
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: hsl(var(--border));
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: hsl(var(--muted-foreground));
+    }
+  </style>
+</head>
+<body>
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-orb hero-orb-1 animate-float"></div>
+    <div class="hero-orb hero-orb-2 animate-float"></div>
+    <div class="hero-grid"></div>
+    
+    <div class="hero-content">
+      <div class="hero-badge glass-card">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+          <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+        </svg>
+        <span>Discover Our Story</span>
+      </div>
+      
+      <h1 class="hero-title">
+        Building the Future, <span class="gradient-text">Together</span>
+      </h1>
+      
+      <p class="hero-subtitle">
+        We're more than a company—we're a movement of innovators, dreamers, and doers united by a singular mission to transform how the world works.
+      </p>
+      
+      <div class="hero-cta">
+        <a href="#company-story" class="btn btn-primary">Explore Our Journey</a>
+        <a href="#footer-cta" class="btn btn-outline">Join Our Team</a>
+      </div>
+    </div>
+    
+    <button class="scroll-indicator" onclick="document.getElementById('company-story').scrollIntoView({behavior: 'smooth'})">
+      <span>Scroll</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    </button>
+  </section>
+
+  <!-- ==================== COMPANY STORY SECTION ==================== -->
+  <section class="story-section" id="company-story">
+    <div class="story-orb story-orb-1 animate-float"></div>
+    <div class="story-orb story-orb-2 animate-float"></div>
+    
+    <div class="container">
+      <div class="story-content">
+        <div class="story-header reveal">
+          <div class="section-badge glass-card">
+            <span>✦</span>
+            <span>Our Story</span>
+          </div>
+          <h2 class="story-title">
+            The <span class="gradient-text">Heart</span> of Innovation
+          </h2>
+          <p class="story-intro">
+            "Every great journey begins with a single step, a moment of clarity, and the courage to dream bigger."
+          </p>
+        </div>
+        
+        <div class="story-paragraphs">
+          <p class="reveal">
+            In 2019, a small group of passionate technologists gathered in a modest co-working space with an audacious vision: to fundamentally reimagine how businesses connect with their customers. What started as late-night brainstorming sessions and countless whiteboards filled with ideas has evolved into a company that now serves millions of users worldwide.
+          </p>
+          
+          <p class="reveal">
+            Our journey hasn't been without challenges. We've weathered market downturns, pivoted our approach multiple times, and learned invaluable lessons about resilience and adaptability. Each obstacle became a stepping stone, teaching us that true innovation isn't about avoiding failure—it's about learning faster than anyone else.
+          </p>
+          
+          <blockquote class="story-quote reveal">
+            We don't just build products; we craft experiences that transform the way people work and live. Every line of code, every design decision, every customer interaction is guided by our unwavering commitment to excellence.
+          </blockquote>
+          
+          <p class="reveal">
+            Today, we stand at the intersection of technology and humanity, driven by the same passion that ignited our founding team. Our diverse workforce of over 500 talented individuals across 12 countries brings unique perspectives that fuel our innovation engine. Together, we're not just building software—we're shaping the future of digital interaction.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ==================== HISTORY SECTION ==================== -->
+  <section class="history-section" id="our-journey">
+    <div class="container">
+      <div class="history-header reveal">
+        <div class="section-badge glass-card">
+          <span>✦</span>
+          <span>The Timeline</span>
+        </div>
+        <h2 class="history-title">
+          Our <span class="gradient-text">Journey</span>
+        </h2>
+      </div>
+      
+      <div class="history-timeline">
+        <!-- 2019 -->
+        <article class="history-entry reveal">
+          <div class="history-year-badge amber">19</div>
+          <div class="history-content">
+            <span class="history-year-label amber">2019</span>
+            <h3 class="history-entry-title">The Genesis</h3>
+            <div class="history-line amber"></div>
+            <p class="history-blurb">
+              Founded in a small garage by three visionary engineers who believed technology could fundamentally change how businesses connect with customers. Armed with nothing but laptops, determination, and an unwavering belief in their vision, they wrote the first lines of code that would eventually power millions of interactions.
+            </p>
+          </div>
+        </article>
+        
+        <!-- 2020 -->
+        <article class="history-entry reveal">
+          <div class="history-year-badge rose">20</div>
+          <div class="history-content">
+            <span class="history-year-label rose">2020</span>
+            <h3 class="history-entry-title">Weathering the Storm</h3>
+            <div class="history-line rose"></div>
+            <p class="history-blurb">
+              When the world shut down, we doubled down. While others retreated, we saw opportunity in adversity. Our platform became a lifeline for businesses transitioning to digital-first operations. We grew from 12 to 85 employees and secured our Series A funding of $15M, validating our belief that remote-first tools were the future.
+            </p>
+          </div>
+        </article>
+        
+        <!-- 2021 -->
+        <article class="history-entry reveal">
+          <div class="history-year-badge emerald">21</div>
+          <div class="history-content">
+            <span class="history-year-label emerald">2021</span>
+            <h3 class="history-entry-title">Scaling New Heights</h3>
+            <div class="history-line emerald"></div>
+            <p class="history-blurb">
+              The year of exponential growth. We launched our enterprise platform, onboarded our first Fortune 500 clients, and expanded to three continents. Our user base grew from 100K to over 2 million. We opened offices in London and Singapore, bringing our total team to 200+ innovators united by a shared purpose.
+            </p>
+            <blockquote class="history-blockquote">
+              "This wasn't just growth—it was a transformation. We evolved from a startup into a global force for change."
+            </blockquote>
+          </div>
+        </article>
+        
+        <!-- 2023 -->
+        <article class="history-entry reveal">
+          <div class="history-year-badge violet">23</div>
+          <div class="history-content">
+            <span class="history-year-label violet">2023</span>
+            <h3 class="history-entry-title">The AI Revolution</h3>
+            <div class="history-line violet"></div>
+            <p class="history-blurb">
+              We integrated cutting-edge AI capabilities that revolutionized our platform. Our machine learning models now process over 10 billion data points daily, delivering insights that were previously impossible. We acquired two AI startups and established our dedicated AI Research Lab with 50 world-class researchers.
+            </p>
+          </div>
+        </article>
+        
+        <!-- 2025 -->
+        <article class="history-entry reveal">
+          <div class="history-year-badge sky">25</div>
+          <div class="history-content">
+            <span class="history-year-label sky">2025</span>
+            <h3 class="history-entry-title">Redefining Tomorrow</h3>
+            <div class="history-line sky"></div>
+            <p class="history-blurb">
+              Today, we stand at the forefront of innovation with over 500 team members, 10 million active users, and a presence in 50+ countries. But we're just getting started. Our next chapter involves pioneering technologies that will reshape industries and empower the next generation of digital pioneers.
+            </p>
+          </div>
+        </article>
+      </div>
+      
+      <p class="history-closing reveal">And this is just the beginning...</p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ==================== MVVG SECTION ==================== -->
+  <section class="mvvg-section" id="what-drives-us">
+    <div class="container">
+      <div class="mvvg-header reveal">
+        <div class="section-badge glass-card">
+          <span>✦</span>
+          <span>Our Foundation</span>
+        </div>
+        <h2 class="mvvg-title">
+          What <span class="gradient-text">Drives</span> Us
+        </h2>
+      </div>
+      
+      <div class="mvvg-grid">
+        <!-- Mission -->
+        <article class="mvvg-card reveal" data-mvvg="mission">
+          <div class="mvvg-card-header">
+            <div class="mvvg-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+              </svg>
+            </div>
+            <div>
+              <span class="mvvg-type">Mission</span>
+              <h3 class="mvvg-card-title">Empowering Digital Excellence</h3>
+            </div>
+          </div>
+          <p class="mvvg-summary">
+            To democratize access to powerful technology tools, enabling businesses of all sizes to compete and thrive in the digital economy.
+          </p>
+          <button class="mvvg-expand-btn" aria-expanded="false">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="mvvg-expanded-content">
+            <p>Our mission goes beyond building software. We're creating an ecosystem where innovation flourishes and barriers to digital transformation dissolve.</p>
+            <ul>
+              <li>Providing enterprise-grade tools at accessible price points</li>
+              <li>Offering comprehensive training and support resources</li>
+              <li>Building intuitive interfaces that require minimal technical expertise</li>
+              <li>Creating scalable solutions that grow with our customers</li>
+            </ul>
+          </div>
+        </article>
+        
+        <!-- Vision -->
+        <article class="mvvg-card reveal" data-mvvg="vision">
+          <div class="mvvg-card-header">
+            <div class="mvvg-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <div>
+              <span class="mvvg-type">Vision</span>
+              <h3 class="mvvg-card-title">Shaping Tomorrow's Digital Landscape</h3>
+            </div>
+          </div>
+          <p class="mvvg-summary">
+            To become the world's most trusted platform for digital transformation, recognized for innovation, reliability, and customer-centric design.
+          </p>
+          <button class="mvvg-expand-btn" aria-expanded="false">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="mvvg-expanded-content">
+            <p>We envision a future where technology amplifies human potential rather than replacing it. Our platform will be the foundation upon which the next generation of digital experiences are built.</p>
+            <ul>
+              <li>Leading the industry in AI-powered automation</li>
+              <li>Setting new standards for data privacy and security</li>
+              <li>Pioneering sustainable technology practices</li>
+              <li>Fostering a global community of digital innovators</li>
+            </ul>
+          </div>
+        </article>
+        
+        <!-- Values -->
+        <article class="mvvg-card reveal" data-mvvg="values">
+          <div class="mvvg-card-header">
+            <div class="mvvg-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/>
+              </svg>
+            </div>
+            <div>
+              <span class="mvvg-type">Values</span>
+              <h3 class="mvvg-card-title">Principles That Guide Us</h3>
+            </div>
+          </div>
+          <p class="mvvg-summary">
+            Integrity, innovation, and impact form the cornerstone of everything we do. We believe in doing well by doing good.
+          </p>
+          <button class="mvvg-expand-btn" aria-expanded="false">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="mvvg-expanded-content">
+            <p>Our values aren't just words on a wall—they're the living principles that guide every decision, from product development to customer support.</p>
+            <ul>
+              <li><strong>Transparency:</strong> Open communication with customers and within our team</li>
+              <li><strong>Excellence:</strong> Never settling for "good enough"</li>
+              <li><strong>Empathy:</strong> Understanding and addressing real user needs</li>
+              <li><strong>Courage:</strong> Taking bold risks to drive meaningful innovation</li>
+            </ul>
+          </div>
+        </article>
+        
+        <!-- Goals -->
+        <article class="mvvg-card reveal" data-mvvg="goals">
+          <div class="mvvg-card-header">
+            <div class="mvvg-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+              </svg>
+            </div>
+            <div>
+              <span class="mvvg-type">Goals</span>
+              <h3 class="mvvg-card-title">Milestones Ahead</h3>
+            </div>
+          </div>
+          <p class="mvvg-summary">
+            Ambitious targets that push us forward: 50M users by 2027, carbon-neutral operations, and technology that genuinely improves lives.
+          </p>
+          <button class="mvvg-expand-btn" aria-expanded="false">
+            <span>Read more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="mvvg-expanded-content">
+            <p>Our goals are ambitious but achievable, designed to push us beyond our comfort zone while remaining grounded in reality.</p>
+            <ul>
+              <li>Reach 50 million active users by 2027</li>
+              <li>Achieve carbon-neutral operations by 2026</li>
+              <li>Launch in 100+ countries with localized support</li>
+              <li>Invest $100M in community education initiatives</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ==================== TIMELINE SECTION ==================== -->
+  <section class="timeline-section" id="company-way">
+    <div class="container">
+      <div class="timeline-header reveal">
+        <div class="section-badge glass-card">
+          <span>✦</span>
+          <span>Year by Year</span>
+        </div>
+        <h2 class="timeline-title">
+          The <span class="gradient-text">Company</span> Way
+        </h2>
+      </div>
+      
+      <!-- Mobile Progress -->
+      <div class="timeline-mobile-progress glass-card">
+        <span class="current-year" id="mobile-current-year">2021</span>
+        <div class="timeline-mobile-bar">
+          <div class="timeline-mobile-bar-fill" id="mobile-progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+      
+      <div class="timeline-cards">
+        <!-- 2021 -->
+        <article class="timeline-card reveal" data-year="2021" id="year-2021">
+          <div class="timeline-card-image">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop" alt="Team collaboration in 2021" id="hero-2021">
+            <div class="timeline-year-overlay glass-card">2021</div>
+          </div>
+          <div class="timeline-card-content">
+            <span class="timeline-card-year">2021</span>
+            <p class="timeline-card-summary">
+              The year of scaling. We tripled our team, launched enterprise features, and expanded to new markets while maintaining our startup agility.
+            </p>
+            <div class="timeline-kpis">
+              <span class="timeline-kpi">Team: <span class="timeline-kpi-value">85</span></span>
+              <span class="timeline-kpi">Funding: <span class="timeline-kpi-value">$15M</span></span>
+              <span class="timeline-kpi">Users: <span class="timeline-kpi-value">500K</span></span>
+            </div>
+            <div class="timeline-gallery">
+              <button class="timeline-gallery-thumb active" data-target="hero-2021" data-src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=100&h=100&fit=crop" alt="Gallery 1">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2021" data-src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=100&h=100&fit=crop" alt="Gallery 2">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2021" data-src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=100&h=100&fit=crop" alt="Gallery 3">
+              </button>
+            </div>
+          </div>
+        </article>
+        
+        <!-- 2022 -->
+        <article class="timeline-card reveal" data-year="2022" id="year-2022">
+          <div class="timeline-card-image">
+            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&h=500&fit=crop" alt="Global expansion in 2022" id="hero-2022">
+            <div class="timeline-year-overlay glass-card">2022</div>
+          </div>
+          <div class="timeline-card-content">
+            <span class="timeline-card-year">2022</span>
+            <p class="timeline-card-summary">
+              Global expansion became our focus. New offices in Europe and Asia, localized products, and a truly international team culture.
+            </p>
+            <div class="timeline-kpis">
+              <span class="timeline-kpi">Team: <span class="timeline-kpi-value">200</span></span>
+              <span class="timeline-kpi">Funding: <span class="timeline-kpi-value">$45M</span></span>
+              <span class="timeline-kpi">Users: <span class="timeline-kpi-value">2M</span></span>
+            </div>
+            <div class="timeline-gallery">
+              <button class="timeline-gallery-thumb active" data-target="hero-2022" data-src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=100&h=100&fit=crop" alt="Gallery 1">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2022" data-src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=100&h=100&fit=crop" alt="Gallery 2">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2022" data-src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=100&h=100&fit=crop" alt="Gallery 3">
+              </button>
+            </div>
+          </div>
+        </article>
+        
+        <!-- 2023 -->
+        <article class="timeline-card reveal" data-year="2023" id="year-2023">
+          <div class="timeline-card-image">
+            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=500&fit=crop" alt="AI integration in 2023" id="hero-2023">
+            <div class="timeline-year-overlay glass-card">2023</div>
+          </div>
+          <div class="timeline-card-content">
+            <span class="timeline-card-year">2023</span>
+            <p class="timeline-card-summary">
+              AI became our superpower. We integrated machine learning across our platform, delivering insights that transformed how our customers work.
+            </p>
+            <div class="timeline-kpis">
+              <span class="timeline-kpi">Team: <span class="timeline-kpi-value">350</span></span>
+              <span class="timeline-kpi">Funding: <span class="timeline-kpi-value">$100M</span></span>
+              <span class="timeline-kpi">Users: <span class="timeline-kpi-value">5M</span></span>
+            </div>
+            <div class="timeline-gallery">
+              <button class="timeline-gallery-thumb active" data-target="hero-2023" data-src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=100&h=100&fit=crop" alt="Gallery 1">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2023" data-src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=100&h=100&fit=crop" alt="Gallery 2">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2023" data-src="https://images.unsplash.com/photo-1555255707-c07966088b7b?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?w=100&h=100&fit=crop" alt="Gallery 3">
+              </button>
+            </div>
+          </div>
+        </article>
+        
+        <!-- 2024 -->
+        <article class="timeline-card reveal" data-year="2024" id="year-2024">
+          <div class="timeline-card-image">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=500&fit=crop" alt="Platform evolution in 2024" id="hero-2024">
+            <div class="timeline-year-overlay glass-card">2024</div>
+          </div>
+          <div class="timeline-card-content">
+            <span class="timeline-card-year">2024</span>
+            <p class="timeline-card-summary">
+              Platform evolution reached new heights. We launched our developer ecosystem and became the preferred choice for enterprise digital transformation.
+            </p>
+            <div class="timeline-kpis">
+              <span class="timeline-kpi">Team: <span class="timeline-kpi-value">450</span></span>
+              <span class="timeline-kpi">Funding: <span class="timeline-kpi-value">$150M</span></span>
+              <span class="timeline-kpi">Users: <span class="timeline-kpi-value">8M</span></span>
+            </div>
+            <div class="timeline-gallery">
+              <button class="timeline-gallery-thumb active" data-target="hero-2024" data-src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=100&h=100&fit=crop" alt="Gallery 1">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2024" data-src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=100&h=100&fit=crop" alt="Gallery 2">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2024" data-src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=100&h=100&fit=crop" alt="Gallery 3">
+              </button>
+            </div>
+          </div>
+        </article>
+        
+        <!-- 2025 -->
+        <article class="timeline-card reveal" data-year="2025" id="year-2025">
+          <div class="timeline-card-image">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=500&fit=crop" alt="Future vision in 2025" id="hero-2025">
+            <div class="timeline-year-overlay glass-card">2025</div>
+          </div>
+          <div class="timeline-card-content">
+            <span class="timeline-card-year">2025</span>
+            <p class="timeline-card-summary">
+              The future is now. We're pioneering the next generation of digital experiences, with innovations that will define the decade ahead.
+            </p>
+            <div class="timeline-kpis">
+              <span class="timeline-kpi">Team: <span class="timeline-kpi-value">500+</span></span>
+              <span class="timeline-kpi">Funding: <span class="timeline-kpi-value">$200M+</span></span>
+              <span class="timeline-kpi">Users: <span class="timeline-kpi-value">10M+</span></span>
+            </div>
+            <div class="timeline-gallery">
+              <button class="timeline-gallery-thumb active" data-target="hero-2025" data-src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&h=100&fit=crop" alt="Gallery 1">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2025" data-src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&h=100&fit=crop" alt="Gallery 2">
+              </button>
+              <button class="timeline-gallery-thumb" data-target="hero-2025" data-src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=500&fit=crop">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=100&h=100&fit=crop" alt="Gallery 3">
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+    
+    <!-- Vertical Year Indicator (Desktop) -->
+    <div class="year-indicator glass-card" id="year-indicator">
+      <div class="year-indicator-track">
+        <div class="year-indicator-line"></div>
+        <div class="year-indicator-progress" id="year-progress"></div>
+        <button class="year-dot" data-year="2021" onclick="scrollToYear('year-2021')">21</button>
+        <button class="year-dot" data-year="2022" onclick="scrollToYear('year-2022')">22</button>
+        <button class="year-dot" data-year="2023" onclick="scrollToYear('year-2023')">23</button>
+        <button class="year-dot" data-year="2024" onclick="scrollToYear('year-2024')">24</button>
+        <button class="year-dot" data-year="2025" onclick="scrollToYear('year-2025')">25</button>
+      </div>
+      <div class="year-indicator-current" id="current-year-display">2021</div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ==================== TESTIMONIALS SECTION ==================== -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="container">
+      <div class="testimonials-header reveal">
+        <div class="section-badge glass-card">
+          <span>✦</span>
+          <span>Testimonials</span>
+        </div>
+        <h2 class="testimonials-title">
+          Voices of <span class="gradient-text">Trust</span>
+        </h2>
+        <p class="testimonials-subtitle">
+          Hear from the leaders and innovators who have transformed their organizations with our platform.
+        </p>
+      </div>
+      
+      <div class="testimonials-container">
+        <div class="testimonials-slider" id="testimonials-slider">
+          <!-- Sarah Chen -->
+          <article class="testimonial-card">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=533&fit=crop&crop=face" alt="Sarah Chen" class="testimonial-image">
+            <div class="testimonial-overlay">
+              <div class="testimonial-info">
+                <h3 class="testimonial-name">Sarah Chen</h3>
+                <p class="testimonial-title">Chief Technology Officer</p>
+                <p class="testimonial-company">TechVentures Inc.</p>
+              </div>
+              <div class="testimonial-hover-content">
+                <p class="testimonial-excerpt">"Their platform transformed how we approach digital innovation. The results exceeded our expectations..."</p>
+                <a href="https://example.com/testimonial-sarah.pdf" target="_blank" rel="noopener noreferrer" class="testimonial-pdf-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                  Read Full Story
+                </a>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Marcus Williams -->
+          <article class="testimonial-card">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=533&fit=crop&crop=face" alt="Marcus Williams" class="testimonial-image">
+            <div class="testimonial-overlay">
+              <div class="testimonial-info">
+                <h3 class="testimonial-name">Marcus Williams</h3>
+                <p class="testimonial-title">VP of Operations</p>
+                <p class="testimonial-company">Global Solutions Ltd.</p>
+              </div>
+              <div class="testimonial-hover-content">
+                <p class="testimonial-excerpt">"We saw a 300% improvement in operational efficiency within the first quarter of implementation..."</p>
+                <a href="https://example.com/testimonial-marcus.pdf" target="_blank" rel="noopener noreferrer" class="testimonial-pdf-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                  Read Full Story
+                </a>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Emily Rodriguez -->
+          <article class="testimonial-card">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=533&fit=crop&crop=face" alt="Emily Rodriguez" class="testimonial-image">
+            <div class="testimonial-overlay">
+              <div class="testimonial-info">
+                <h3 class="testimonial-name">Emily Rodriguez</h3>
+                <p class="testimonial-title">Director of Innovation</p>
+                <p class="testimonial-company">FutureTech Corp.</p>
+              </div>
+              <div class="testimonial-hover-content">
+                <p class="testimonial-excerpt">"The AI capabilities are truly next-generation. It's like having a team of data scientists at your fingertips..."</p>
+                <a href="https://example.com/testimonial-emily.pdf" target="_blank" rel="noopener noreferrer" class="testimonial-pdf-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                  Read Full Story
+                </a>
+              </div>
+            </div>
+          </article>
+          
+          <!-- David Park -->
+          <article class="testimonial-card">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=533&fit=crop&crop=face" alt="David Park" class="testimonial-image">
+            <div class="testimonial-overlay">
+              <div class="testimonial-info">
+                <h3 class="testimonial-name">David Park</h3>
+                <p class="testimonial-title">CEO & Founder</p>
+                <p class="testimonial-company">StartupHub</p>
+              </div>
+              <div class="testimonial-hover-content">
+                <p class="testimonial-excerpt">"As a startup, we needed enterprise-grade tools without the enterprise price tag. This delivered exactly that..."</p>
+                <a href="https://example.com/testimonial-david.pdf" target="_blank" rel="noopener noreferrer" class="testimonial-pdf-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                  Read Full Story
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+        
+        <div class="testimonials-nav">
+          <button class="testimonials-nav-btn" id="testimonials-prev" aria-label="Previous testimonial">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </button>
+          <button class="testimonials-nav-btn" id="testimonials-next" aria-label="Next testimonial">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ==================== FOOTER CTA SECTION ==================== -->
+  <section class="footer-cta" id="footer-cta">
+    <div class="container">
+      <div class="footer-cta-card glass-card reveal">
+        <h2 class="footer-cta-title">
+          Ready to Be Part of <span class="gradient-text">Our Story</span>?
+        </h2>
+        <p class="footer-cta-text">
+          Join the thousands of companies transforming their digital future with our platform. Let's build something extraordinary together.
+        </p>
+        <div class="footer-cta-buttons">
+          <a href="#" class="btn btn-primary">Get Started Today</a>
+          <a href="#" class="btn btn-outline">View Open Positions</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    // Scroll Reveal Animation
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+    
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // MVVG Card Expand/Collapse
+    const mvvgCards = document.querySelectorAll('.mvvg-card');
+    
+    mvvgCards.forEach(card => {
+      const btn = card.querySelector('.mvvg-expand-btn');
+      
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isExpanded = card.classList.contains('expanded');
+        
+        // Close all other cards
+        mvvgCards.forEach(c => c.classList.remove('expanded'));
+        mvvgCards.forEach(c => c.querySelector('.mvvg-expand-btn').setAttribute('aria-expanded', 'false'));
+        mvvgCards.forEach(c => c.querySelector('.mvvg-expand-btn span').textContent = 'Read more');
+        
+        // Toggle current card
+        if (!isExpanded) {
+          card.classList.add('expanded');
+          btn.setAttribute('aria-expanded', 'true');
+          btn.querySelector('span').textContent = 'Read less';
+        }
+      });
+      
+      card.addEventListener('click', () => {
+        btn.click();
+      });
+    });
+
+    // Timeline Gallery Image Switching
+    const galleryThumbs = document.querySelectorAll('.timeline-gallery-thumb');
+    
+    galleryThumbs.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const targetId = thumb.dataset.target;
+        const newSrc = thumb.dataset.src;
+        const heroImg = document.getElementById(targetId);
+        
+        // Update active state for siblings
+        const siblings = thumb.parentElement.querySelectorAll('.timeline-gallery-thumb');
+        siblings.forEach(s => s.classList.remove('active'));
+        thumb.classList.add('active');
+        
+        // Update hero image
+        heroImg.src = newSrc;
+      });
+    });
+
+    // Year Indicator Logic
+    const timelineSection = document.getElementById('company-way');
+    const yearIndicator = document.getElementById('year-indicator');
+    const yearDots = document.querySelectorAll('.year-dot');
+    const yearProgress = document.getElementById('year-progress');
+    const currentYearDisplay = document.getElementById('current-year-display');
+    const mobileCurrentYear = document.getElementById('mobile-current-year');
+    const mobileProgressFill = document.getElementById('mobile-progress-fill');
+    const timelineCards = document.querySelectorAll('.timeline-card');
+    const years = ['2021', '2022', '2023', '2024', '2025'];
+    
+    function scrollToYear(yearId) {
+      const element = document.getElementById(yearId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+    
+    function updateYearIndicator() {
+      const sectionRect = timelineSection.getBoundingClientRect();
+      const sectionTop = sectionRect.top;
+      const sectionHeight = sectionRect.height;
+      const windowHeight = window.innerHeight;
+      
+      // Show/hide indicator based on section visibility
+      if (sectionTop < windowHeight * 0.5 && sectionTop > -sectionHeight + windowHeight * 0.5) {
+        yearIndicator.classList.add('visible');
+      } else {
+        yearIndicator.classList.remove('visible');
+      }
+      
+      // Find active year
+      let activeYear = years[0];
+      let activeIndex = 0;
+      
+      timelineCards.forEach((card, index) => {
+        const rect = card.getBoundingClientRect();
+        const cardCenter = rect.top + rect.height / 2;
+        
+        if (cardCenter < windowHeight * 0.6) {
+          activeYear = card.dataset.year;
+          activeIndex = index;
+        }
+      });
+      
+      // Update dots
+      yearDots.forEach(dot => {
+        dot.classList.remove('active');
+        if (dot.dataset.year === activeYear) {
+          dot.classList.add('active');
+        }
+      });
+      
+      // Update progress
+      const progressPercent = (activeIndex / (years.length - 1)) * 100;
+      yearProgress.style.height = `${progressPercent}%`;
+      
+      // Update current year display
+      currentYearDisplay.textContent = activeYear;
+      mobileCurrentYear.textContent = activeYear;
+      mobileProgressFill.style.width = `${progressPercent}%`;
+    }
+    
+    window.addEventListener('scroll', updateYearIndicator);
+    updateYearIndicator();
+
+    // Testimonials Navigation
+    const slider = document.getElementById('testimonials-slider');
+    const prevBtn = document.getElementById('testimonials-prev');
+    const nextBtn = document.getElementById('testimonials-next');
+    
+    prevBtn.addEventListener('click', () => {
+      slider.scrollBy({ left: -340, behavior: 'smooth' });
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      slider.scrollBy({ left: 340, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
